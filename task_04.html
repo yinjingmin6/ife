@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+*{
+	padding: 0;
+	margin: 0;
+	font-family:"Microsoft YaHei", Verdana, Arial, Helvetica;
+	font-size: 14px;
+	color: #333;
+}
+li {
+	list-style:none;
+}
+a {
+	text-decoration: none;
+}
+ul {
+	margin-top: 30px;
+
+}
+ul>li {
+	float: left;
+	width: 40px;
+	height: 35px;
+	background-color: pink;
+	margin-right: 10px;
+	line-height: 35px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+ul>li>a {
+	display: inline-block;
+	width: 39px;
+	height: 34px;
+}
+ul>li:hover,button:hover {
+	opacity: 0.8;
+}
+.box {
+	width: 500px;
+	height: 200px;
+	background-color:#e9ecec;
+	margin: 200px auto;
+	text-align: center;
+	padding: 20px;
+}
+input {
+	width: 100px;
+	height: 40px;
+	border-radius: 3px;
+	padding-left: 10px;
+}
+button {
+	width: 50px;
+	height: 40px;
+	background-color:#06cee0;
+	margin-left: 10px;
+	border-radius: 5px;
+}
+</style>
+</head>
+<body>
+<div class="box">
+	<input type="text" id="inputBox">
+	<button id="leftIn">左侧入</button>
+	<button id="rightIn">右侧入</button>
+	<button id="leftOut">左侧出</button>
+	<button id="rightOut">右侧出</button>
+	<ul id="lis">
+		
+	</ul>
+</div>
+<script>
+var data=[1,2,3,4,5];
+var inp=document.getElementById("inputBox");
+var lis=document.getElementById("lis");
+// 初始化函数 将数组中各元素放到（队列） ul 的 li 中
+function init(){
+	lis.innerHTML=" ";
+	if(data.length > 0){
+		for(var i=0;i<data.length;i++){
+			var Li='<li><a href="javascript:void(0)" onclick="del(this)"; title="'+i+'">'+data[i]+'</a></li>';
+			lis.innerHTML += Li;
+		}
+	}else {
+		return false;
+	}
+}
+// 初始化
+init();
+// 元素删除函数，点击队列中任何一个元素，则该元素会被从队列中删除
+function del(obj){
+	var delNum = obj.getAttribute("title");
+	data.splice(delNum,1);
+	init();
+}
+// 左侧入
+document.getElementById('leftIn').onclick=function(){
+	console.log(inp.value);
+	if(inp.value!=" " && !isNaN(inp.value)){
+		data.unshift(inp.value);
+		init();
+		inp.value=" ";
+	}else{
+		return false;
+	}
+}
+// 右侧入
+document.getElementById('rightIn').onclick=function(){
+	if(inp.value!=" " && !isNaN(inp.value)){
+		data.push(inp.value);
+		init();
+		inp.value=" ";
+	}else{
+		return false;
+	}	
+}
+// 左侧出
+document.getElementById('leftOut').onclick=function(){
+	var item=data.shift();
+	alert(item);
+	init();
+}
+// 右侧出
+document.getElementById('rightOut').onclick=function(){
+	var item = data.pop();
+	alert(item);
+	init();	
+}
+
+</script>
+</body>
+</html>
