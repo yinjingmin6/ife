@@ -99,21 +99,23 @@ function del(obj){
 // 左侧入
 document.getElementById('leftIn').onclick=function(){
 	console.log(inp.value);
-	if(inp.value!=" " && !isNaN(inp.value)){
+	if(inp.value!=" " && inp.value!=""  && !isNaN(inp.value)){
 		data.unshift(inp.value);
 		init();
 		inp.value=" ";
 	}else{
+		alert("请输入数字！");
 		return false;
 	}
 }
 // 右侧入
 document.getElementById('rightIn').onclick=function(){
-	if(inp.value!=" " && !isNaN(inp.value)){
+	if(inp.value!=" " && inp.value!="" && !isNaN(inp.value)){
 		data.push(inp.value);
 		init();
 		inp.value=" ";
 	}else{
+		alert("请输入数字！");
 		return false;
 	}	
 }
