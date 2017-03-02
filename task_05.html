@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>task05</title>
+<style>
+*{
+	padding: 0;
+	margin: 0;
+	font-family:"Microsoft YaHei", Verdana, Arial, Helvetica;
+	font-size: 14px;
+	color: #333;
+}
+li {
+	list-style:none;
+}
+a {
+	text-decoration: none;
+}
+.box {
+	min-width: 500px;
+	height: 300px;
+	background-color:#e9ecec;
+	margin: 200px auto;
+	text-align: center;
+	padding: 20px;
+}
+input {
+	width: 100px;
+	height: 40px;
+	border-radius: 3px;
+	padding-left: 10px;
+}
+button {
+	width: 90px;
+	height: 40px;
+	background-color:#06cee0;
+	margin-left: 10px;
+	border-radius: 5px;
+}
+ul {
+	margin-top: 30px;
+	height: 220px;
+	background-color:#fff;
+	vertical-align: text-bottom;
+	position: relative;
+}
+ul>li {
+	width: 25px;
+	min-height: 20px;
+	background-color: pink;
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	left: 5px;
+}
+ul>li>a {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+}
+ul>li:hover,button:hover {
+	opacity: 0.8;
+}
+
+</style>
+</head>
+<body>
+<div class="box">
+	<input type="text" id="inputBox" minlength="2" max-length="3">
+	<button id="leftIn">左侧入</button>
+	<button id="rightIn">右侧入</button>
+	<button id="leftOut">左侧出</button>
+	<button id="rightOut">右侧出</button>
+	<button id="sort">从小到大排序</button>
+	<ul id="lis">
+		
+	</ul>
+</div>
+<script>
+var data=[10,31,52,70,100,66,26];
+var inp=document.getElementById("inputBox");
+var lis=document.getElementById("lis");
+// 初始化函数 将数组中各元素放到（队列） ul 的 li 中
+function init(){
+	lis.innerHTML=" ";
+	if(data.length > 0){
+		for(var i=0;i<data.length;i++){
+			// 根据data各元素的数字大小确定其所在li元素的高度，根据i值确定其left值
+			var ht = data[i]*2;
+			var lef = (i+1)*5+i*25;
+			var Li='<li style="height:'+ht+'px;left:'+lef+'px;"><a href="javascript:void(0)" onclick="del(this)"; title="'+i+'">'+data[i]+'</a></li>';
+			lis.innerHTML += Li;
+		}
+	}else {
+		return false;
+	}
+}
+// 初始化
+init();
+// 元素删除函数，点击队列中任何一个元素，则该元素会被从队列中删除
+function del(obj){
+	var delNum = obj.getAttribute("title");
+	data.splice(delNum,1);
+	init();
+}
+// 左侧入
+document.getElementById('leftIn').onclick=function(){
+// 判断队列数量（data的data.length值）
+	if(data.length > 60){
+		alert("队列数量最多为60个，已达到限制。");
+		return false;
+	}else if(inp.value!=" " && inp.value!=""  && !isNaN(inp.value) &&inp.value>=10 && inp.value <=100){
+		// if表达式中限制输入数字在10-100之间，且不能为空
+		data.unshift(inp.value);
+		init();
+		inp.value=" ";
+	}else{
+		alert("请输入10-100之间的数字！");
+		inp.value=" ";
+		return false;
+	}
+}
+// 右侧入
+document.getElementById('rightIn').onclick=function(){
+	if(data.length>60){
+		alert("队列数量最多为60个，已达到限制。");
+		return false;
+	}else if(inp.value!=" " && inp.value!="" && !isNaN(inp.value) &&inp.value>=10 && inp.value <=100){
+		data.push(inp.value);
+		init();
+		inp.value=" ";
+	}else{
+		alert("请输入10-100之间的数字！");
+		inp.value=" ";
+		return false;
+	}	
+}
+// 左侧出
+document.getElementById('leftOut').onclick=function(){
+	// 当队列数为0时，不能再执行此操作
+	if(data.length<0){
+		alert("队列为空！");
+		return false;
+	}else{
+		var item=data.shift();
+		alert(item);
+		init();
+	}
+}
+// 右侧出
+document.getElementById('rightOut').onclick=function(){
+	if(data.length<0){
+		alert("队列为空！");
+		return false;
+	}else{
+		var item = data.pop();
+
+		alert(item);
+		init();
+	}		
+}
+// 冒泡排序，从小到大
+document.getElementById('sort').onclick=function(){
+	for(var i=0;i<=data.length;i++){
+		for(var j=0;i+j<=data.length;j++){		
+			if(data[j] > data[j+1]){
+				var tmp = data[j];
+				data[j] = data[j+1];
+				data[j+1] = tmp;
+			}
+		}
+	}
+	init();
+}
+
+</script>
+</body>
+</html>
