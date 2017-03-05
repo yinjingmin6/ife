@@ -139,10 +139,7 @@ document.getElementById('rightIn').onclick=function(){
 // 左侧出
 document.getElementById('leftOut').onclick=function(){
 	// 当队列数为0时，不能再执行此操作
-	if(data.length<0){
-		alert("队列为空！");
-		return false;
-	}else{
+	if(data.length){
 		var item=data.shift();
 		alert(item);
 		init();
@@ -150,30 +147,37 @@ document.getElementById('leftOut').onclick=function(){
 }
 // 右侧出
 document.getElementById('rightOut').onclick=function(){
-	if(data.length<0){
-		alert("队列为空！");
-		return false;
-	}else{
+	if(data.length){
 		var item = data.pop();
-
 		alert(item);
 		init();
 	}		
 }
 // 冒泡排序，从小到大
+var timer=null;
 document.getElementById('sort').onclick=function(){
-	for(var i=0;i<=data.length;i++){
-		for(var j=0;i+j<=data.length;j++){		
-			if(data[j] > data[j+1]){
-				var tmp = data[j];
-				data[j] = data[j+1];
-				data[j+1] = tmp;
-			}
-		}
-	}
-	init();
+	clearInterval(timer);
+    var i=0,j=0,len=data.length;
+    timer=setInterval(function(){
+        if (i<len-1) {
+            if (j==len-1-i) {
+                j=0;
+                i++;
+            }
+            if (data[j]>data[j+1]) {
+                var x=0;
+                x=data[j];
+                data[j]=data[j+1];
+                data[j+1]=x;
+            }
+            j++;
+        }                   
+        init();
+        if (i==data.length-1) {
+            clearInterval(timer);
+        }
+    },50);	
 }
-
 </script>
 </body>
 </html>
