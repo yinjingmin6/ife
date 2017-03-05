@@ -97,8 +97,19 @@ function init(){
 }
 //点击查询按钮 查询各个元素中是否有符合input条件的内容，将匹配到的内容进行特殊标识
 document.getElementById('search').onclick=function(){
+
     var inp=inpt.value;
     var liss=lis.getElementsByTagName("li");
+    // 将上次查询的标记内容还原
+    for(var i=0;i<liss.length;i++){
+        var d=liss[i].innerHTML.replace(new RegExp("<span>","g"),"");
+                liss[i].innerHTML=d;
+    }
+    for(var i=0;i<liss.length;i++){
+    	var d=liss[i].innerHTML.replace(new RegExp("</span>","g"),"");
+                liss[i].innerHTML=d;
+    }
+    // 将新输入的查询内容进行标识
     for(var i=0;i<liss.length;i++){
         var d=liss[i].innerHTML.replace(new RegExp(inp,"g"),"<span>"+inp+"</span>");
                 liss[i].innerHTML=d;
