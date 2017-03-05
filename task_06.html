@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+*{
+	padding: 0;
+	margin: 0;
+	font-family:"Microsoft YaHei", Verdana, Arial, Helvetica;
+	font-size: 14px;
+	color: #333;
+}
+.box {
+	width: 850px;
+	height: 200px;
+	background-color:#e9ecec;
+	margin: 200px auto;
+	text-align: center;
+	padding: 20px;
+}
+textarea{
+	width: 300px;
+	height: 40px;
+	float: left;
+	padding: 5px 0 0 5px;
+}
+input {
+	width: 100px;
+	height: 40px;
+	border-radius: 3px;
+	padding-left: 10px;
+	margin-left: 10px;
+}
+button {
+	width: 50px;
+	height: 40px;
+	background-color:#06cee0;
+	margin-left: 10px;
+	border-radius: 5px;
+}
+button:hover {
+	opacity: 0.8;
+}
+ul {
+	margin-top: 30px;
+}
+ul>li {
+	list-style:none;
+	float: left;
+	min-width: 40px;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	background-color: pink;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	padding:5px;
+}
+ul>li>span {
+	color: red;
+}
+</style>
+</head>
+<body>
+<div class="box">
+	<textarea name="" id="texta"></textarea>
+	<button id="leftIn">左侧入</button>
+	<button id="rightIn">右侧入</button>
+	<button id="leftOut">左侧出</button>
+	<button id="rightOut">右侧出</button>
+	<input type="text" id="inputBox">
+	<button id="search">查询</button>
+	<ul id="lis">
+		
+	</ul>
+</div>
+<script>
+var data=[];
+var inpt=document.getElementById("inputBox");
+var text=document.getElementById("texta");
+var lis=document.getElementById("lis");
+var search=document.getElementById("search");
+
+// 将文本框中输入的内容及ul中原有内容放到li标签里
+function init(){
+    var str=data.toString().split(/[,\s+、，\r]/);
+    data=[];
+    for(var i=0;i<str.length;i++){
+        data.push(str[i]);
+    }
+    var strr="";
+    for(var j=0;j<data.length;j++){
+            strr+='<li>'+data[j]+'</div>';
+        }
+    lis.innerHTML=strr;
+    strr=""; 
+}
+//点击查询按钮 查询各个元素中是否有符合input条件的内容，将匹配到的内容进行特殊标识
+document.getElementById('search').onclick=function(){
+    var inp=inpt.value;
+    var liss=lis.getElementsByTagName("li");
+    for(var i=0;i<liss.length;i++){
+        var d=liss[i].innerHTML.replace(new RegExp(inp,"g"),"<span>"+inp+"</span>");
+                liss[i].innerHTML=d;
+    }    
+}
+// 左侧入  首先判断文本框中输入的内容是否不为空，输入的内容加到li中时删除多余的空格
+document.getElementById('leftIn').onclick=function(){
+	if(text.value.trim()!=""){
+		data.unshift(text.value.trim().replace(/\s+/g, ' '));
+		init();
+		text.value="";
+	}else{
+		alert("请输入内容！");
+		text.value="";
+		return false;
+	}	
+}
+// 右侧入
+document.getElementById('rightIn').onclick=function(){
+	if(text.value.trim()!=""){
+		data.push(text.value.trim().replace(/\s+/g, ' '));
+		init();
+		text.value="";
+	}else{
+		alert("请输入内容！");
+		text.value="";
+		return false;
+	}
+}
+// 左侧出
+document.getElementById('leftOut').onclick=function(){
+	var item=data.shift();
+	alert(item);
+	init();
+}
+// 右侧出
+document.getElementById('rightOut').onclick=function(){
+	var item = data.pop();
+	alert(item);
+	init();	
+}
+</script>
+</body>
+</html>
