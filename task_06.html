@@ -113,7 +113,8 @@ document.getElementById('search').onclick=function(){
     for(var i=0;i<liss.length;i++){
         var d=liss[i].innerHTML.replace(new RegExp(inp,"g"),"<span>"+inp+"</span>");
                 liss[i].innerHTML=d;
-    }    
+    }  
+    inpt.value="";  
 }
 // 左侧入  首先判断文本框中输入的内容是否不为空，输入的内容加到li中时删除多余的空格
 document.getElementById('leftIn').onclick=function(){
