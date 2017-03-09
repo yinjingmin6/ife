@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>task_07</title>
+<style>
+.box{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.parent {
+	width: 800px;
+	height: 300px;
+	border: 2px solid #999;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: #fff;
+}
+.child_1{
+	width: 360px;
+	height: 240px;
+	border: 2px solid #999;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: #fff;
+}
+.child_2 {
+	width: 160px;
+	height: 180px;
+	border: 2px solid #999;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: #fff;
+}
+.child_3 {
+	width: 50px;
+	height: 120px;
+	border: 2px solid #999;
+	background-color: #fff;
+}
+.btn {
+	text-align: center;
+	margin-top: 30px;
+}
+button {
+	margin: 0 auto;
+	width: 80px;
+	height: 50px;
+	background-color: #0ea749;
+	cursor: pointer;
+	border: none;
+}
+button:hover {
+	opacity: 0.8;
+	border: none;
+}
+</style>
+</head>
+<body>
+<div class="box">
+    <div class="parent">
+        <div class="child_1">
+            <div class="child_2">
+                <div class="child_3">
+                </div>
+                <div class="child_3">
+                </div>
+            </div>
+            <div class="child_2">
+                <div class="child_3">
+                </div>
+                <div class="child_3">
+                </div>
+            </div>
+        </div>
+        <div class="child_1">
+            <div class="child_2">
+                <div class="child_3">
+                </div>
+                <div class="child_3">
+                </div>
+            </div>
+            <div class="child_2">
+                <div class="child_3">
+                </div>
+                <div class="child_3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="btn">
+    <button id="pre">先序</button>
+    <button id="in">中序</button>
+    <button id="post">后序</button>
+</div>
+<script>
+function getId(obj){
+    return document.getElementById(obj);
+}
+var pre1 = getId("pre");
+var in1 = getId("in");
+var post1 = getId("post");
+var parent = document.getElementsByClassName("parent")[0];
+var result = new Array();
+// 先序遍历
+function preOrder(node){
+    if(!(node == null)){
+        result.push(node);
+        preOrder(node.firstElementChild);
+        preOrder(node.lastElementChild);
+    }
+}	
+// 中序遍历
+function inOrder(node){
+    if(!(node == null)){
+        inOrder(node.firstElementChild);   //先访问左子树
+        result.push(node);                 //再访问根节点
+        inOrder(node.lastElementChild);    //最后访问右子树
+    }
+}
+// 后序遍历
+function postOrder(node){
+    if(!(node == null)){
+        postOrder(node.firstElementChild);
+        postOrder(node.lastElementChild);
+        result.push(node);
+    }
+}
+function addHandler(element,type,handler){
+    if(element.addEventListener) {
+        element.addEventListener(type,handler,false);
+    }
+    else if(element.attachEvent)
+    {
+        element.attachEvent("on"+type,handler);
+    }
+    else
+        element["on" + type]=handler;
+}
+var choosen,timer;
+function display(){
+    var event=arguments[0]||window.event;
+    var target=event.target||event.srcElement;
+    if(result.length>0) {
+        choosen.style.backgroundColor = "#fff";
+        result = [];
+        clearTimeout(timer);
+    }
+    if(target && target.id === "pre"){
+        preOrder(parent);
+    }
+    else if(target && target.id === "in")
+    {
+        inOrder(parent);
+    }
+    else if(target && target.id === "post")
+    {
+        postOrder(parent);
+    }
+    animation();
+}
+function animation()
+{
+    choosen=result.shift();
+    if(choosen)
+    {
+        choosen.style.backgroundColor = "#f3a498";
+        timer=setTimeout(function(){
+            choosen.style.backgroundColor="#fff";
+            animation();
+        },500);
+    }
+}
+addHandler(pre1,'click',display);
+addHandler(in1,'click',display);
+addHandler(post1,'click',display);
+</script>
+</body>
+</html>
