@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>使用css实现折叠面板</title>
+<style>
+* {
+	padding: 0;
+	margin: 0;
+}
+input {
+	display: none;
+}
+.body {
+	width: 400px;
+	background-color: #efc8c8;
+	padding: 30px;
+}
+.one label {
+	display: inline-block;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	background-color: #f3ab7a;
+	border: 1px solid #eee;
+
+}
+.one .child {
+	width: 100%;
+	background-color: #fff;
+	display: none;
+	padding-bottom: 20px;
+}
+.one input:checked~.child {
+	display: block;
+}
+</style>
+</head>
+<body>
+<!-- 主要是应用了input的type=radio及checked的属性 -->
+<div class="body">
+	<div class="one">
+		<label for="input1">使用css实现折叠面板1</label><input type="radio" id="input1" name="radio">
+		<div class="child">
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+		</div>
+	</div>
+	<div class="one">
+		<label for="input2">使用css实现折叠面板2</label><input type="radio" id="input2" name="radio">
+		<div class="child">
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+		</div>
+	</div>
+	<div class="one">
+		<label for="input3">使用css实现折叠面板3</label><input type="radio" id="input3" name="radio">
+		<div class="child">
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+			<p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

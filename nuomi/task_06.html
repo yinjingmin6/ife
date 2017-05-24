@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>自定义checkout，radios样式</title>
+<style>
+* {
+	padding: 0;
+	margin: 0;
+}
+
+h2 {
+	margin: 20px 0;
+}
+.wrapper {
+	width: 300px;
+	margin: 100px auto;
+}
+/* 伪元素实现 */
+.checkbox {
+ margin-bottom: 20px;
+ font-weight: 700;
+}
+.check_box + label, .radio_box1 + label {
+	width: 16px;
+	height: 16px;
+	display: flex;
+	border:1px solid #d9d9d9;
+}
+.check_box:checked + label, .radio_box1:checked + label {
+	border:1px solid #d73d32;
+   	font-weight: 700;
+}
+.check_box:checked + label::after, .radio_box1:checked + label::after {
+	margin: auto;
+    content: '\2714';
+    color: red;
+    width:8px;
+    height:8px;
+    line-height: 8px;
+    text-align: center;
+    font-size: 12px;
+}
+input{
+  margin:0;
+  display: none;
+}
+.radio {
+	display: flex;
+	width: 50px;
+	justify-content: space-between;
+}
+.radio_box1 + label {
+	border-radius: 50%;
+}
+.radio_box1:checked + label::after {
+	border-radius: 50%;
+	width: 8px;
+	height: 8px;
+	line-height: 8px;
+	margin: auto;
+	content: ' ';
+	background: #d73d32;
+}
+/* 雪碧图实现 */
+.check_box_s + label, .radio_box1_s + label {
+	width: 18px;
+	height: 16px;
+	display: inline-block;
+	border:none;
+	background: url(./images/bg.png) no-repeat;
+}
+.check_box_s + label {
+	background-position: -25px -32px;
+}
+.radio_box1_s + label {
+	background-position: -24px -10px;
+}
+.check_box_s:checked + label {
+	background-position: -60px -32px;
+}
+.radio_box1_s:checked + label {
+	background-position: -59px -10px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+	<h2>伪元素实现</h2>
+	<div class="checkbox">
+		<input type="checkbox" id="checkBx" class="check_box">
+		<label for="checkBx"></label>
+	</div>
+	<div class="radio">
+		<input type="radio" name="one" id="radioBx" class="radio_box1">
+		<label for="radioBx"></label>
+		<input type="radio" name="one" id="radioBx1" class="radio_box1">
+		<label for="radioBx1"></label>
+	</div>
+	<h2>雪碧图实现</h2>
+	<div class="checkbox">
+		<input type="checkbox" id="checkBx_s" class="check_box_s">
+		<label for="checkBx_s"></label>
+	</div>
+	<div class="radio">
+		<input type="radio" name="one" id="radioBx_s" class="radio_box1_s">
+		<label for="radioBx_s"></label>
+		<input type="radio" name="one" id="radioBx1_s" class="radio_box1_s">
+		<label for="radioBx1_s"></label>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>动态数据绑定实现动态html渲染</title>
+</head>
+<body>
+<div id="app">
+	<span>{{user.name}}</span>
+	<span>{{user.age}}</span>
+</div>
+<script>
+	function Vue(obj) {
+		this.el = obj.el;
+		this.data = obj.data;
+		// 渲染模板
+		this.render();
+	}
+	//  获取需要渲染的Html模板
+	Vue.prototype.getHtmlMode = function() {
+		this.dom = document.querySelector(this.el);
+		return this.dom.innerHTML;
+	}
+	// 渲染函数
+	Vue.prototype.render = function() {
+		var html = this.getHtmlMode();
+		var reg = /\{\{(.*?)\}\}/g;
+		var self = this;
+		html.match(reg).forEach(function(val){
+			var s = val.substr(2, val.length-4);
+			var arr = s.split('.');
+			var r = self.data;
+			arr.forEach(function(v){
+				r = r[v];
+			})
+			html = html.replace(val, r);
+		})
+		this.dom.innerHTML  = html;
+	}
+
+	let app = new Vue({
+		el: '#app',
+		data: {
+			user: {
+				name: "yjm",
+				age: 18
+			}
+		}
+	})
+</script>
+</body>
+</html>

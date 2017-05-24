@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, user-scalable=no,initial-scale=1.0,maxmum-scale=1.0, minimum-scale=1.0"> -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义网页右键菜单</title>
+<style>
+*{
+	padding: 0;
+	margin: 0;
+}
+.test {
+	/* width: 100px; */
+	height: 50px;
+	line-height: 50px;
+	position: absolute;
+}
+p {
+	padding: 10px;
+	position: relative;
+	background-color: #ddd;
+}
+.top {
+	top: 0;
+}
+.left {
+	left: 0;
+}
+.bottom {
+	bottom: 0;
+}
+#customMenu {
+	position: absolute;
+	border: 1px solid #eee;
+	display: none;
+}
+#customMenu li {
+	height: 30px;
+	line-height: 30px;
+	padding: 0 10px;
+	background-color: #fff;
+	list-style: none;
+	border-bottom: 1px solid #ccc;
+}
+#customMenu li:hover {
+	background-color: #eee;
+}
+</style>
+</head>
+<body>
+<div class="test top left">
+	<p>windows右键点击出现自定义菜单</p>
+</div>
+<div class="test bottom left">
+	<p>windows右键点击出现自定义菜单</p>
+</div>
+<ul id="customMenu">
+	<li>text1</li>
+	<li>text2</li>
+	<li>text3</li>
+</ul>
+<script>
+	const testDiv = document.getElementsByClassName('test');
+	const menu = document.getElementById('customMenu');
+	const div = Array.from(testDiv);
+	div.forEach(function(item, index, array){
+		
+		item.addEventListener('contextmenu', function(e){
+			e.preventDefault();
+			 e.returnValue=false;//在IE中阻止原有的菜单
+			const maxWidth = window.innerWidth;  //浏览器窗口宽度
+			const maxHeight = window.innerHeight;
+			const menuComputed = document.defaultView.getComputedStyle(menu, null);
+			console.log(menuComputed);
+			const menuWidth = parseInt(menuComputed.width, 10);
+			const menuHeight = parseInt(menuComputed.height, 10);
+			if(e.clientX + menuWidth <= maxWidth) {   
+			//e.clientX 当事件被触发时鼠标指针向对于浏览器页面（或客户区）的水平坐标。
+				menu.style.left = e.clientX + 'px';
+			}else {
+				menu.style.left = e.clientX - menuWidth + 'px';
+			}
+			if(e.clientY + menuHeight <= maxHeight) {
+				menu.style.top = e.clientY + 'px';
+			}else {
+				menu.style.top = e.clientY - menuHeight -32 + 'px';
+			}
+			 menu.style.display = 'block';
+		})
+	});
+	document.onclick = function() {
+		menu.style.display= 'none';
+	}
+	const lis =menu.getElementsByTagName('li');
+	for(var i=0; i<lis.length; i++) {
+		lis[i].onclick = function() {
+			alert(this.innerHTML);
+		}
+	}
+</script>
+</body>
+</html>

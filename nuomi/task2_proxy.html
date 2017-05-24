@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>vue动态数据绑定</title>
+</head>
+<body>
+<script>
+	function Observer(data) {
+		return new Proxy(data, {
+			get: function(target, key){
+				if(key in target){
+					console.log('你访问了' + key);
+					return target[key];
+				}else{
+					throw new Error('key does not exist');
+				}
+			},
+			set: function(target, key, newVal){
+				console.log('你设置了' + key);
+				console.log('新的' + key + '=' + newVal);
+				target[key] = newVal;
+			}
+		})
+	}
+	let app = new Observer({
+		company: 'UESTC',
+		address: 'chengdu'
+	})
+</script>
+</body>
+</html>
