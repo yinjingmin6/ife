@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>task_09</title>
+<style>
+*{
+    padding: 0;
+    margin: 0;
+}
+.box{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    margin-top: 50px;
+}
+.parent {
+	width: 1200px;
+	height: 300px;
+	border: 2px solid #999;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background-color: #fff;
+}
+.child_1{
+	width: 490px;
+	height: 240px;
+	border: 2px solid #999;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background-color: #fff;
+    margin-right: 3px;
+    padding-right: 2px;
+}
+.child_11 {
+    width: 120px;
+}
+.child_2 {
+	width: 210px;
+	height: 180px;
+	border: 2px solid #999;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background-color: #fff;
+    margin-right: 2px;
+    padding-right: 2px;
+}
+.child_22 {
+    width: 80px;
+}
+.child_23 {
+    width: 130px;
+    padding-right: 0px;
+}
+.child_3 {
+	width: 40px;
+	height: 120px;
+	border: 2px solid #999;
+	background-color: #fff;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 2px;
+}
+.child_31 {
+    width: 32px;
+}
+.child_32 {
+    width: 48px;
+}
+.child_33 {
+    width: 60px;
+}
+.child_34 {
+    width: 100px;
+}
+.child_4 {
+    width: 60px;
+    height: 70px;
+    border: 2px solid #999;
+    background-color: #fff;
+    margin-right: 2px;
+    line-height: 70px;
+    text-align: center;
+}
+.btn {
+	text-align: center;
+	margin-top: 30px;
+}
+button {
+	margin: 0 auto;
+	width: 80px;
+	height: 50px;
+	background-color: #0ea749;
+	cursor: pointer;
+	border: none;
+}
+button:hover {
+	opacity: 0.8;
+	border: none;
+}
+input {
+    width: 100px;
+    height: 40px;
+    border-radius: 3px;
+    padding-left: 10px;
+    margin-left: 20px;
+}
+.addOne {
+	width:30%;
+    height:70px;
+    line-height: 70px;
+    text-align: center;
+    margin-right: 8px;
+    border: 2px solid #999;
+}
+</style>
+</head>
+<body>
+<div class="box" id="box">
+    <div class="parent">Super
+        <div class="child_1">Sub
+            <div class="child_2">App
+                <div class="child_3">Peter</div>
+                <div class="child_3 child_31">Pig</div>
+                <div class="child_3">Coco</div>
+                <div class="child_3 child_32">Soccer</div>
+            </div>
+            <div class="child_2 child_22">Phone</div>
+            <div class="child_2 child_23">
+                <div class="child_3 child_32">Book</div>
+                <div class="child_3 child_33">School</div>
+            </div>
+        </div>
+        <div class="child_1">Note
+            <div class="child_2">Human
+                <div class="child_3 child_32">Code</div>
+                <div class="child_3 child_33">Operate</div>
+                <div class="child_3 child_32">Man</div>
+            </div>
+            <div class="child_2">Progra
+                <div class="child_3 child_34">ani<div class="child_4">Cat</div></div>
+                <div class="child_3 child_33">Goss</div>
+            </div>
+        </div>
+        <div class="child_1 child_11">Fish</div>
+    </div>
+</div>
+<div class="btn">
+    <button id="pre">遍历</button>
+    <input type="text" id="inputBox">
+    <button id="search">查询</button>
+    <button id="delete">删除</button>
+    <input type="text" id="addText">
+    <button id="addTxt">添加</button>
+</div>
+<script>
+function getId(obj){
+    return document.getElementById(obj);
+}
+var box = getId("box");
+var pre1 = getId("pre");
+var inpt = getId("inputBox");
+var search = getId("search");
+var del = getId("delete");
+var addText = getId("addText");
+var addTxt = getId("addTxt");
+var parent = document.getElementsByClassName("parent")[0];
+var result = new Array();
+var a=0,b=0,c=0;
+var choosen,timer;
+// depth-first遍历
+function preOrder(node){
+    var iterator = document.createNodeIterator(parent,NodeFilter.SHOW_ELEMENT,null,false);
+    var node=iterator.nextNode();
+    while(!(node == null)){
+        result.push(node);
+        node = iterator.nextNode();
+    }
+}	
+function addHandler(element,type,handler){
+    if(element.addEventListener) {
+        element.addEventListener(type,handler,false);
+    }
+    else if(element.attachEvent)
+    {
+        element.attachEvent("on"+type,handler);
+    }
+    else
+        element["on" + type]=handler;
+}
+function display(){
+    var event=arguments[0]||window.event;
+    var target=event.target||event.srcElement;
+    if(result.length>0) {
+        choosen.style.backgroundColor = "#fff";
+        result = [];
+        clearTimeout(timer);
+    }
+    if(target && target.id === "pre"){
+        init();
+        preOrder(parent);
+        show(0);
+    }
+    else if(target && target.id === "search")
+    {
+        init();
+        preOrder(parent);
+        show(1);
+    }
+   
+}
+//c为0时，执行遍历操作，c为1时，执行动态查询操作
+function show(c){
+    var inp=inpt.value;
+    choosen=result.shift();
+    if(choosen){
+        if(c==1){
+            if(inpt.value.trim()==""){
+                alert("请输入要查询的内容！");
+                return false;
+            };
+            var content=choosen.firstChild.nodeValue.replace(/(^\s*)|(\s*$)/g, "") ;
+            if(inp.trim()==content){
+                a=1;
+                b++;
+            }
+            else{
+                a=0;
+            }
+        }  
+        choosen.style.backgroundColor = "#f3a498";
+        timer=setTimeout(function(){
+            if(a==1){
+                choosen.style.backgroundColor="#ff8a00";
+            }else{
+                choosen.style.backgroundColor="#fff";
+            }
+            show(c);
+        },500);
+    }else if(b==0 &&c==1){
+        alert("没有找到搜索的内容！");
+        inpt.value="";
+    }
+}
+// 初始化
+function init(){
+    b=0;
+    result=[]; 
+    var divs=document.getElementsByTagName("div");
+    for(var i=0;i<divs.length;i++){
+        divs[i].style.backgroundColor="#fff";
+    } 
+    addText.value="";   
+}
+function deleteone(e){
+	init();
+	var target = e.target;
+	if(target.nodeName.toLowerCase() != "div") return;
+	target.style.backgroundColor = "#0000ff";
+	del.onclick=function(){
+		target.parentNode.removeChild(target);
+		init();
+	}
+	addTxt.onclick=function(){
+		var insertCont=addText.value;
+		var one=target.innerHTML;
+		target.innerHTML=one+"<div class='addOne'>"+insertCont+"</div>";
+		init();
+	}
+}
+addHandler(pre1,'click',display);
+addHandler(search,'click',display);
+addHandler(box,'click',deleteone);
+</script>
+</body>
+</html>
