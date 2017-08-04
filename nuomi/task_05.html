@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>动态数据绑定实现动态html渲染</title>
+    <title>动态数据绑定--实现动态html渲染</title>
 </head>
 <body>
 <div id="app">
@@ -27,9 +27,11 @@
 		var reg = /\{\{(.*?)\}\}/g;
 		var self = this;
 		html.match(reg).forEach(function(val){
+			// 取得{{...}}中的数据
 			var s = val.substr(2, val.length-4);
 			var arr = s.split('.');
 			var r = self.data;
+			// 循环得到最后的子属性值
 			arr.forEach(function(v){
 				r = r[v];
 			})
