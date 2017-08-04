@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>实现深层次的数据绑定watch</title>
+    <title>实现深层次的数据向上传递</title>
 </head>
 <body>
 <script>
 function Observer(data, events, parent, parentKey){
 	this.data = data;
-	this.events = events || {}; 
-	this.parent = parent || {}; 
+	this.events = events || {};
+	this.parent = parent || {};
 	this.parentKey = parentKey || '';
 	this.walk(data, this.events);
 }
@@ -19,11 +19,11 @@ Observer.prototype.walk = function(data, events) {
 			if(typeof(data[key]) == 'object'){
 				new Observer(data[key], events, this, key)
 			};
-			this.getSet(key, data[key], events);
+			this.convert(key, data[key], events);
 		}
 	}
 }
-Observer.prototype.getSet = function(key, val, events) {
+Observer.prototype.convert = function(key, val, events) {
 	var self = this;
   	Object.defineProperty(this.data, key, {
     	enumerable: true,
@@ -36,16 +36,21 @@ Observer.prototype.getSet = function(key, val, events) {
 		    console.log('你设置了', key, ',新的值为', newVal);
 		    if (newVal !== val) {
 		        val = newVal;
+		        // 保存key的上级，如果有的话
 		        var parent = self.parent;
+		        // 保存key的上级的key值
 		        var parentKey = self.parentKey;
-		        while (parent) { // 循环寻找上级触发事件
+		        // 循环寻找上级触发事件
+		        while (parent) {
 		          self.$emit(parentKey, newVal);
 		          parentKey = parent.parentKey;
 		          parent = parent.parent;
 		        }
-		        self.$emit(key, newVal); //触发当前key事件
+		        //触发当前key事件
+		        self.$emit(key, newVal); 
 	      	}
-	      	if (typeof newVal === "object") { //这个key是obj，递归，往key加get、set
+	      	// 如果这个newVal是obj，继续递归调用new Observer
+	      	if (typeof newVal === "object") {
 	        	return new Observer(newVal, events, this, key);
 	      	}
 		}
@@ -67,27 +72,38 @@ Observer.prototype.$emit = function() {
 		listener(data || {})
 	})
 }
-let app = new Observer({
+var data = {
 	user: {
 		name: {
-			fn: "yin",
-			ln: "jm"
+			first: {
+				y: "y"
+			},
+			last: "jm"
 		},
 		age: 18
 	},
 	address: "成都"
-});
+}
+
+let app = new Observer(data);
+
 app.$watch('user', function() {
 	console.log('你改变了user');
 });
 app.$watch('name', function(){
 	console.log('你改变了name');
 });
-app.$watch('fn', function(){
-	console.log('你改变了fn');
+app.$watch('first', function(){
+	console.log('你改变了first');
 });
-app.$watch('age', function(){
-	console.log('你改变了age');
+app.$watch('y', function(y){
+	console.log(`你改变了y, 现在是${y}`);
+});
+app.$watch('age', function(age){
+	console.log(`你的age改变了，现在是${age}`);
+});
+app.$watch('address', function(address){
+	console.log(`你的address改变了，现在是${address}`);
 });
 app.data.user.age = 20;
 </script>
